@@ -1,7 +1,7 @@
 int pushButton1 = 2;
-int oldButtonState1 = 0;
+int oldButtonState1 = HIGH;
 int pushButton2 = 3;
-int oldButtonState2 = 0;
+int oldButtonState2 = HIGH;
 
 const int threshold = 10;
 const int currPotentiometer = 0;
@@ -24,8 +24,8 @@ int potRead3 = 0;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(pushButton1, INPUT);
-  pinMode(pushButton2, INPUT);
+  pinMode(pushButton1, INPUT_PULLUP);
+  pinMode(pushButton2, INPUT_PULLUP);
 }
 
 void loop() {
@@ -57,8 +57,13 @@ void buttonHandler(String Name, int button, int oldButtonState){
   int thisButtonState = digitalRead(button);
   if(thisButtonState != oldButtonState)
   {
-    oldButtonState = thisButtonState;  
-    sendOutput(Name, thisButtonState);
+    oldButtonState = thisButtonState; 
+    if (thisButtonState == HIGH) {
+      sendOutput(Name, 0);  
+    } else if (thisButtonState == LOW) {
+      sendOutput(Name, 1);
+    }
+       
   }
 }
 
