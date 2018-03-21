@@ -3,7 +3,7 @@ int oldButtonState1 = 0;
 int pushButton2 = 3;
 int oldButtonState2 = 0;
 
-const int threshold = 10;
+const int threshold = 50;
 const int currPotentiometer = 0;
 
 const int potPin0 = A0;
@@ -24,33 +24,30 @@ int potRead3 = 0;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(pushButton1, INPUT);
-  pinMode(pushButton2, INPUT);
+  //pinMode(pushButton1, INPUT);
+  //pinMode(pushButton2, INPUT);
 }
 
 void loop() {
   buttonHandler("b1:", pushButton1, oldButtonState1);
   buttonHandler("b2:", pushButton2, oldButtonState1);
-  potentiometerHandler("p1:", potPin0, tempPotRead0, potRead0);
-  potentiometerHandler("p2:", potPin1, tempPotRead1, potRead1);
-  potentiometerHandler("p3:", potPin2, tempPotRead2, potRead2);
-  potentiometerHandler("p3:", potPin3, tempPotRead3, potRead3);
+  potentiometerHandler("p1:", potPin0, potRead0);
+  potentiometerHandler("p2:", potPin1, potRead1);
+  potentiometerHandler("p3:", potPin2, potRead2);
+  potentiometerHandler("p4:", potPin3, potRead3);
   delay(1);        // delay in between reads for stability
 }
 
 
-void potentiometerHandler(String name, int potPin, int potTempVal, int potVal)
+void potentiometerHandler(String name, int potPin, int &potVal)
 {
-  potTempVal = analogRead(potPin);
+    int potTempVal = analogRead(potPin);
   
-  if(potTempVal != potVal)
-  {
-     if(potTempVal > (potVal+threshold) || potTempVal < (potVal-threshold))
-     {
+    if(potTempVal >= (potVal+threshold) || potTempVal <= (potVal-threshold))
+    {
        potVal = potTempVal;
        sendOutput(name, potVal);
-     }
-  }
+    }
 }
 
 void buttonHandler(String Name, int button, int oldButtonState){
