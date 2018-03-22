@@ -3,7 +3,7 @@ int oldButtonState1 = HIGH;
 int pushButton2 = 3;
 int oldButtonState2 = HIGH;
 
-const int threshold = 50;
+const int threshold = 10;
 const int currPotentiometer = 0;
 
 const int potPin0 = A0;
